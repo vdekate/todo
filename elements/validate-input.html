@@ -1,0 +1,41 @@
+<link href="../bower_components/polymer/polymer.html" rel="import">
+<link rel="import" href="../bower_components/px-validation/px-validation.html" />
+
+<dom-module id="validate-input">
+    <template>
+        <style>
+             :host {
+                display: block;
+            }
+            
+            .validation-error {
+                border-color: #f34336;
+                background-color: #ffecec;
+            }
+        </style>
+        <h3>Validate Input</h3>
+        <px-validation id="validationEl">
+            <px-validator validation-method="isNumber" import="../bower_components/px-validation/px-example-validator.html"></px-validator>
+        </px-validation>
+
+        <label for=id1>Enter a Number: </label>
+        <input id=id1 class="text-input" on-keyup="isValid" on-change="isValid" type=text/>
+
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "validate-input",
+        properties: {
+
+        },
+        isValid: function (value) {
+            this.$.id1.classList.remove("validation-error");
+            if (!this.$.validationEl.validate(value.target.value).passedValidation && value.target.value !== "") {
+                this.$.id1.classList.add("validation-error");
+            }
+        }
+    });
+
+</script>

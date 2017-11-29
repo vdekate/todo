@@ -1,0 +1,88 @@
+<link href="../bower_components/polymer/polymer.html" rel="import">
+
+<dom-module id="todo-app">
+    <template>
+        <style>
+             :host {
+                display: block;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                overflow: auto
+            }
+            
+            #container {
+                height: 100%;
+            }
+            
+            .table {
+                display: table;
+            }
+
+            .row {
+                display: table-row;
+            }
+             .cell {
+                display: table-cell;
+                padding: 5px;
+                margin: 5px;
+            }
+        </style>
+        <div id="container">
+            <h3>Todo App....</h3>
+            <input id="tTask" value="{{taskInput::input}}" label="Task" type="text"></input>
+            <input id="tTask" value="{{userInput::input}}" label="Username" type="text"></input>
+            <input type="button" on-tap="postTask" label="POST" value="POST"></input>
+            <div>{{tasks}}</div>
+            <div class="table">
+                <template is="dom-repeat" items="{{todos}}">
+                    
+                        <div class="row">
+                            <div class="cell"><span><b>{{item.user}}</b></span> needs to complete</b> <span><b>{{item.task}}</b></span></div>
+                            <div class="cell"><input type="button" on-tap="removeTask" value="DELETE"> </input></div>
+                        </div>
+                </template>
+            </div>
+        </div>
+
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "todo-app",
+        properties: {
+            todos: {
+                type: Array,
+                reflectToAttribute: true,
+                notify: true,
+                value: [{ user: "user", task: "task" }, { user: "user", task: "task" }]
+            },
+            tasks: {
+                type: String,
+                value: "default tasks...",
+                notify: true,
+            }
+        },
+        postTask: function () {
+            var task = this.taskInput;
+            var user = this.userInput;
+            if (task && task !== "" && user && user !== "") {
+                this.push('todos', { task: task, user: user });
+                this.tasks = "New TASKS todo..."
+                console.log(this.todos);
+            }
+            else {
+                alert("Enter todos..")
+            }
+        },
+        removeTask: function (e) {
+            var target = e.model;
+            var index = this.todos.indexOf(target.get('item'));
+            this.splice('todos', index, 1);
+        }
+    });
+
+</script>

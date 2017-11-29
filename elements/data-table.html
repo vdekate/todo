@@ -1,0 +1,147 @@
+<link href="../bower_components/polymer/polymer.html" rel="import">
+<link rel="import" href="../bower_components/px-data-table/px-data-table.html" />
+<link rel="import" href="../bower_components/px-validation/px-validation.html" />
+<link rel="import" href="../bower_components/px-icon-set/px-icon-set.html" />
+
+<dom-module id="data-table">
+    <template>
+        <style>
+             :host {
+                display: block;
+            }
+            
+            px-data-table {
+                --px-data-table-highlight--high: rgba(100, 0, 0, 0.5);
+            }
+        </style>
+        <h3>Data Table</h3>
+        <px-data-table id="datatable" table-data={{tableData}} enable-column-resize>
+            <px-data-table-column name="first" selectable filterable sortable editable>
+                <px-data-table-highlight highlight-method="isNumber" highlight-value="high" import="../bower_components/px-data-table/px-example-highlight.html">
+                </px-data-table-highlight>
+                <px-validation>
+                    <px-validator import="../bower_components/px-validation/px-example-validator.html" validation-method="isNumber">
+                    </px-validator>
+                </px-validation>
+            </px-data-table-column>
+            <px-data-table-column name="last">
+            </px-data-table-column>
+            <px-data-table-column name="email"></px-data-table-column>
+            <px-data-table-column name="icons" type="html"></px-data-table-column>
+        </px-data-table>
+
+    </template>
+</dom-module>
+<script>
+    GlobalBehavior = {
+        properties: {
+            name: {
+                type: String,
+                value: "Hello"
+            }
+        },
+        callMe: function () {
+            console.log("Called me", this.name);
+        }
+    }
+
+</script>
+<script>
+    Polymer({
+        is: "data-table",
+        properties: {
+            tableData: {
+                type: Array,
+                notify: true,
+                value: [{ "first": "JValentine", "last": "Meyer", "email": "valentinemeyer@scentric.com", "icons": "<div onclick=GlobalBehavior.callMe()>Edit</div><div>Save</div><px-icon icon=\"px-nav:favorite\" on-click=callMeComponent></px-icon>" }, { "first": "123432423", "last": "Alexander", "email": "silvaalexander@gmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "JValentine", "last": "Meyer", "email": "valentinemeyer@scentric.com", "icons": "<div onclick=GlobalBehavior.callMe()>Edit</div><div>Save</div><px-icon icon=\"px-nav:favorite\" on-click=callMeComponent></px-icon>" }, { "first": "123432423", "last": "Alexander", "email": "silvaalexander@gmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "JValentine", "last": "Meyer", "email": "valentinemeyer@scentric.com", "icons": "<div onclick=GlobalBehavior.callMe()>Edit</div><div>Save</div><px-icon icon=\"px-nav:favorite\" on-click=callMeComponent></px-icon>" }, { "first": "123432423", "last": "Alexander", "email": "silvaalexander@gmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "JValentine", "last": "Meyer", "email": "valentinemeyer@scentric.com", "icons": "<div onclick=GlobalBehavior.callMe()>Edit</div><div>Save</div><px-icon icon=\"px-nav:favorite\" on-click=callMeComponent></px-icon>" }, { "first": "123432423", "last": "Alexander", "email": "silvaalexander@gmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "JValentine", "last": "Meyer", "email": "valentinemeyer@scentric.com", "icons": "<div onclick=GlobalBehavior.callMe()>Edit</div><div>Save</div><px-icon icon=\"px-nav:favorite\" on-click=callMeComponent></px-icon>" }, { "first": "123432423", "last": "Alexander", "email": "silvaalexander@gmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "Hopkins", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "HopkinsLat", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "HopkinsLast", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }, { "first": "HopkinsLast", "last": "Wong", "email": "hopkinswong@hotmail.com", "icons": "<div>Edit</div><div>Save</div>" }]
+            }
+        },
+        behaviors: [GlobalBehavior],
+        listeners: {
+            "getme": "_gotMe",
+            "px-cell-click": "_getCellClicked"
+        },
+        attached: function () {
+            this.async(function () {
+                this.$.datatable.$$("#dataTable").querySelector("#pagination").addEventListener("first-item-index-to-display-changed", function (event) {
+                    this.async(this.disableRows, 0);
+                }.bind(this), false);
+                //this.$.datatable.$$("#dataTable").$$("#scrollBodyTableContainer").querySelector(".aha-icons-th").style.width = "100%"; // 100% width
+                //this.$.datatable.$$("#dataTable").$$("#scrollBodyTableContainer").querySelector(".aha-icons-th").style.width = "50%";
+                //this.$.datatable.$$("#dataTable").$$("#scrollBodyTableContainer").querySelector(".aha-icons-th").style.width = "5%"; // pick the icons column
+                var tableContainer = this.$.datatable.$$("#dataTable").$$("#scrollBodyTableContainer");
+                var iconsColumn = tableContainer.querySelector(".aha-icons-th");
+                var iconsColumnWidth = iconsColumn.style.width = "5%";
+                this.async(this.disableRows, 650);
+            }.bind(this), 0);
+        },
+        resetCells: function (c) {
+            c.cellEditable = true;
+            c.style.opacity = 1;
+            if(c.classList.contains("px-data-table-highlight--high")){
+                c.style.backgroundColor = "rgba(100, 0, 0, 0.5)";
+            }
+            else{
+                c.style.backgroundColor = "rgba(0, 0, 0, 0)";
+            }
+        },
+        disableCells: function (c) {
+            c.cellEditable = false;
+            c.style.opacity = 0.5;
+            c.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+        },
+        resetInputs: function (i) {
+            i.disabled = false;
+        },
+        disableInputs: function (i) {
+            i.disabled = true;
+        },
+        disableIndividualCells: function (inputs, pxCells) {
+            var rowInputs = Array.prototype.slice.call(inputs);
+            var rowPxCells = Array.prototype.slice.call(pxCells);
+            rowInputs.map(this.resetInputs);
+            //rowPxCells.map(this.resetCells);
+            if (rowInputs[0] && rowInputs[0].value === "123432423") {
+                rowInputs.map(this.disableInputs);
+                //rowPxCells.map(this.disableCells);
+            }
+        },
+        checkAllCells: function (rows) {
+            var cells = rows.querySelectorAll("input"); // --or-- rows.querySelectorAll("px-data-table-cell");
+            var pxDataTableCells = rows.querySelectorAll("px-data-table-cell");
+            cells.length && this.disableIndividualCells(cells, pxDataTableCells);
+        },
+        getAllRows: function () {
+            var tableContainer = this.$.datatable.$$("#dataTable").$$("#scrollBodyTableContainer");
+            return tableContainer.querySelectorAll(".tr");
+        },
+        disableRows: function () {
+            var rows = this.getAllRows();
+            var cells = rows.forEach(this.checkAllCells.bind(this));
+        },
+        callMeComponent: function () {
+            console.log("Main Component");
+        },
+        _gotMe: function () {
+            console.log("Got mE");
+        },
+        _getCellClicked: function (e) {
+            //var cellText = e.detail.column && e.detail.row && e.detail.row.row[e.detail.column.name].value;
+            var cell = this.$.datatable.$.dataTable.querySelectorAll("px-data-table-cell"); // Get Px-Data-Cell from Cell click
+            // Iterate Over each to check which one has cell__edit, only one will have edit at a time..
+            cell && cell.forEach(function (c) {
+                if (c.classList.contains("cell__edit")) { // check if cell is editing
+                    c.classList.remove("px-data-table-highlight--high"); // remove highlight
+
+                    // Either fire this manually 
+                    // c.fire('validate', { newValue: cellText });
+                    // c.fire('px-cell-validate', { newValue: cellText });
+
+                    // Or Use the exisiting function of px-data-table-cell
+                    c._cellValueChanged(null);
+                }
+            });
+        }
+    });
+
+</script>
